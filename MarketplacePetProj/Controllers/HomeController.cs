@@ -22,6 +22,5 @@ namespace MarketplacePetProj.Controllers
         {
             return View();
         }
-
     }
 }
