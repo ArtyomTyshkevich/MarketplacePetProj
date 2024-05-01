@@ -11,12 +11,8 @@ namespace MarketplacePetProj.Models
         [MaxLength(25)]
         public string Name { get; set; } = "";
         public string HashPasword { get; set; } = "";
-        public List<Product> CreatedProducts { get; set; }
-        public Order Order { get; set; }
-        public Client()
-        {
-            CreatedProducts = new List<Product>();
-            Order = new Order();
-        }
+        public ICollection<Product> CreatedProducts { get; set; }= new List<Product>();
+        public ICollection<Order> Orders { get; set; }=new List<Order>();
+        public Order basketOrder { get; set; } = new Order();
     }
 }

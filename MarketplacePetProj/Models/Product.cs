@@ -18,7 +18,6 @@ namespace MarketplacePetProj.Models
         public int Quantity { get; set; }
         [Required]
         public ProductStatus Status { get; set; }
-
         public DateTime CreatedDate { get; set; }
         public string? ImageFileName { get; set; }
     }

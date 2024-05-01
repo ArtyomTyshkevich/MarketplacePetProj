@@ -5,23 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MarketplacePetProj.Migrations
 {
-    public partial class createDb : Migration
+    public partial class createDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_orders", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "clients",
                 columns: table => new
@@ -30,17 +17,30 @@ namespace MarketplacePetProj.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     HashPasword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    basketOrderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_clients_orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_orders_clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "clients",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -75,9 +75,14 @@ namespace MarketplacePetProj.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_clients_OrderId",
+                name: "IX_clients_basketOrderId",
                 table: "clients",
-                column: "OrderId");
+                column: "basketOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_orders_ClientId",
+                table: "orders",
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_ClientId",
@@ -88,18 +93,30 @@ namespace MarketplacePetProj.Migrations
                 name: "IX_products_OrderId",
                 table: "products",
                 column: "OrderId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_clients_orders_basketOrderId",
+                table: "clients",
+                column: "basketOrderId",
+                principalTable: "orders",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_clients_orders_basketOrderId",
+                table: "clients");
+
             migrationBuilder.DropTable(
                 name: "products");
 
             migrationBuilder.DropTable(
-                name: "clients");
+                name: "orders");
 
             migrationBuilder.DropTable(
-                name: "orders");
+                name: "clients");
         }
     }
 }

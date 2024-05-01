@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Service\" />
+    <Folder Include="wwwroot\productImage\" />
   </ItemGroup>
 
 </Project>

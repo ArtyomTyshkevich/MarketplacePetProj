@@ -6,11 +6,8 @@ namespace MarketplacePetProj.Models
     {
         [Key]
         public int Id { get; set; }
-        public List<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; } = new List<Product>();
         public DateTime CreatedDate { get; set; }
-        public Order()
-        { 
-            Products=new List<Product>();
-        }
+
     }
 }

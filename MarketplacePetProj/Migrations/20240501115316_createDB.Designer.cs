@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketplacePetProj.Migrations
 {
     [DbContext(typeof(MarketDbContext))]
-    [Migration("20240424164003_createDb")]
-    partial class createDb
+    [Migration("20240501115316_createDB")]
+    partial class createDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,12 +41,12 @@ namespace MarketplacePetProj.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int>("basketOrderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("basketOrderId");
 
                     b.ToTable("clients");
                 });
@@ -59,10 +59,15 @@ namespace MarketplacePetProj.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("orders");
                 });
@@ -117,13 +122,20 @@ namespace MarketplacePetProj.Migrations
 
             modelBuilder.Entity("MarketplacePetProj.Models.Client", b =>
                 {
-                    b.HasOne("MarketplacePetProj.Models.Order", "Order")
+                    b.HasOne("MarketplacePetProj.Models.Order", "basketOrder")
                         .WithMany()
-                        .HasForeignKey("OrderId")
+                        .HasForeignKey("basketOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("basketOrder");
+                });
+
+            modelBuilder.Entity("MarketplacePetProj.Models.Order", b =>
+                {
+                    b.HasOne("MarketplacePetProj.Models.Client", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId");
                 });
 
             modelBuilder.Entity("MarketplacePetProj.Models.Product", b =>
@@ -140,6 +152,8 @@ namespace MarketplacePetProj.Migrations
             modelBuilder.Entity("MarketplacePetProj.Models.Client", b =>
                 {
                     b.Navigation("CreatedProducts");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("MarketplacePetProj.Models.Order", b =>
