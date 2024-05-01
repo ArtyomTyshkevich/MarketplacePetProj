@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="productImage\" />
     <Folder Include="Service\Interfaces\" />
     <Folder Include="Service\Implementations\" />
     <Folder Include="wwwroot\productImage\" />

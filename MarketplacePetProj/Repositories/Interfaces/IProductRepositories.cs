@@ -1,6 +1,10 @@
-﻿namespace MarketplacePetProj.Repositories.Interface
+﻿using MarketplacePetProj.Models;
+using MarketplacePetProj.Repositories;
+
+namespace MarketplacePetProj.Repositories
 {
-    public class IProduct
+    public interface IProductRepositories : IRepositories<Product>
     {
+
     }
 }

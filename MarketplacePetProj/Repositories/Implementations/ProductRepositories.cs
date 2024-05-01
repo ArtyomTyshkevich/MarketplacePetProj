@@ -2,7 +2,6 @@
 using MarketplacePetProj.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
-using MarketplacePetProj.Repositories.
 
 namespace MarketplacePetProj.Repositories
 {

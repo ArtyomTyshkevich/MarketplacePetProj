@@ -1,12 +1,9 @@
-﻿namespace MarketplacePetProj.Repositories.Interface
+﻿using MarketplacePetProj.Models;
+
+namespace MarketplacePetProj.Repositories
 {
-    public interface IOrder
+    public interface IOrderRepositories : IRepositories<Order>
     {
-        public Task<Client> Get();
-        public Task<Client> Get(int Id);
-        public Task Create(Client client);
-        public Task Update(Client client);
-        public Task Delete(Client client);
 
     }
 }
