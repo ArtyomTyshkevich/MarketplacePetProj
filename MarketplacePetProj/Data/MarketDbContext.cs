@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MarketplacePetProj.Data
 {
-    public class MarketDbContext : DbContext : IdentityDbContext<Client>
+    public class MarketDbContext : IdentityDbContext<Client>
     {
         public MarketDbContext(DbContextOptions<MarketDbContext> options) : base(options)
         {

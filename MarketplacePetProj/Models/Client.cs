@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarketplacePetProj.Models
 {
-    public class Client
+    public class Client : IdentityUser
     {
         [Key]
         public int Id { get; set; }

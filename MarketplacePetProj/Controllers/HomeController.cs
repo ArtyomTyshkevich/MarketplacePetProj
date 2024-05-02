@@ -4,22 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using MarketplacePetProj.Repositories;
 using System.Linq;
+using MarketplacePetProj.Service.Interfaces;
 
 namespace MarketplacePetProj.Controllers
 {
     public class HomeController : Controller
     {
         private readonly MarketDbContext _MarketDbContext;
-        private readonly IProductRepositories productRepositories;
-        public HomeController(MarketDbContext marketDbContext, IProductRepositories productRepositories)
+        private readonly IProductService productService;
+        public HomeController(MarketDbContext marketDbContext, IProductService productService)
         {
             _MarketDbContext = marketDbContext;
-            this.productRepositories = productRepositories;
+            this.productService = productService;
         }
         [HttpGet]
         public IActionResult Index()
         {
-            return View(productRepositories.Get().Result);
+            return View(productService.GetProducts().Result);
         }
         [HttpGet]
         public IActionResult Privacy()
@@ -35,6 +36,11 @@ namespace MarketplacePetProj.Controllers
         public IActionResult Backet()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult ProductPage(int Id)
+        {
+            return View(productService.GetProducts().Result);
         }
     }
 }

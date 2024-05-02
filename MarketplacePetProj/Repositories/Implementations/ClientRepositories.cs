@@ -30,7 +30,7 @@ namespace MarketplacePetProj.Repositories
             return await _MarketDbContext.clients.ToListAsync();
         }
 
-        public async Task<Client?> Get(int Id)
+        public async Task<Client?> Get (int Id)
         {
             return await _MarketDbContext.clients.Where(x=>x.Id == Id).FirstOrDefaultAsync();
         }
