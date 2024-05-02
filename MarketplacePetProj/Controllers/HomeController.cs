@@ -16,13 +16,23 @@ namespace MarketplacePetProj.Controllers
             _MarketDbContext = marketDbContext;
             this.productRepositories = productRepositories;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             return View(productRepositories.Get().Result);
         }
-
+        [HttpGet]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Backet(int id)
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Backet()
         {
             return View();
         }

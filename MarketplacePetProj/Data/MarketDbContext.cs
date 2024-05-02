@@ -1,9 +1,10 @@
 ﻿using MarketplacePetProj.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplacePetProj.Data
 {
-    public class MarketDbContext : DbContext
+    public class MarketDbContext : DbContext : IdentityDbContext<Client>
     {
         public MarketDbContext(DbContextOptions<MarketDbContext> options) : base(options)
         {
