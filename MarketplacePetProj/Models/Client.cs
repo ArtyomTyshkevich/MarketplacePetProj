@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-
+﻿using MarketplacePetProj.Enums;
+using MarketplacePetProj.Models;
+using Microsoft.AspNetCore.Identity;
 namespace MarketplacePetProj.Models
 {
     public class Client : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
+        public string Description { get; set; } = "";
 
-        [Required]
-        [MaxLength(25)]
-        public string Name { get; set; } = "";
-        public string HashPasword { get; set; } = "";
-        public ICollection<Product> CreatedProducts { get; set; }= new List<Product>();
-        public ICollection<Order> Orders { get; set; }=new List<Order>();
-        public Order basketOrder { get; set; } = new Order();
+        public ICollection<Product> CreatedProducts { get; set; } = new List<Product>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ClientStatus ClientStatus { get; set; } 
     }
 }

@@ -1,0 +1,33 @@
+﻿@using MarketplacePetProj.Repositories;
+@model IEnumerable<MarketplacePetProj.Models.Product>
+
+<h2>Shopping Basket</h2>
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price.ToString("c")</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Your shopping basket is empty.</p>
+}

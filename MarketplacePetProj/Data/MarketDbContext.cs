@@ -13,6 +13,7 @@ namespace MarketplacePetProj.Data
         public DbSet<Product> products { get; set; }
         public DbSet<Client>clients { get; set; }
         public DbSet<Order> orders { get; set; }
+
     }
 }
 

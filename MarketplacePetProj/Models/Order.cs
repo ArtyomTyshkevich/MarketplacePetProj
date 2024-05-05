@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MarketplacePetProj.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace MarketplacePetProj.Models
 {
@@ -6,8 +7,11 @@ namespace MarketplacePetProj.Models
     {
         [Key]
         public int Id { get; set; }
+
         public ICollection<Product> Products { get; set; } = new List<Product>();
         public DateTime CreatedDate { get; set; }
+        public OrderStatus orderStatus { get; set; } = Enums.OrderStatus.basket;
+        public string CLientId { get; set; }
 
     }
 }
