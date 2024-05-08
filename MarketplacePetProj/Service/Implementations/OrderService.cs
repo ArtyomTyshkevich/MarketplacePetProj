@@ -11,27 +11,27 @@ namespace MarketplacePetProj.Service.Implementations
         {
             this.orderRepositories = orderRepositories;
         }
-        public async Task CreateProduct(Order order)
+        public async Task CreateOrder(Order order)
         {
             await orderRepositories.Create(order);
         }
 
-        public async Task DeleteProduct(Order order)
+        public async Task DeleteOrder(Order order)
         {
             await orderRepositories.Delete(order);
         }
 
-        public async Task<Order> GetProduct(int Id)
+        public async Task<Order> GetOrder(int Id)
         {
             return await orderRepositories.Get(Id);
         }
 
-        public async Task<List<Order>> GetProducts()
+        public async Task<List<Order>> GetOrders()
         {
             return await orderRepositories.Get();
         }
 
-        public async Task UpdateProduct(Order order)
+        public async Task UpdateOrder(Order order)
         {
             await orderRepositories.Update(order);
         }

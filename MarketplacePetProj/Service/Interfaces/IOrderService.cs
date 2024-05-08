@@ -4,10 +4,10 @@ namespace MarketplacePetProj.Service.Interfaces
 {
     public interface IOrderService
     {
-        Task CreateProduct(Order order);
-        Task DeleteProduct(Order order);
-        Task<Order> GetProduct(int Id);
-        Task<List<Order>> GetProducts();
-        Task UpdateProduct(Order order);
+        Task CreateOrder(Order order);
+        Task DeleteOrder(Order order);
+        Task<Order> GetOrder(int Id);
+        Task<List<Order>> GetOrders();
+        Task UpdateOrder(Order order);
     }
 }

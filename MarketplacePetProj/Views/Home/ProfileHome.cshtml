@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model MarketplacePetProj.Models.Client
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+@inject SignInManager<Client> SignInManager
+<h1>Профиль</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <!-- Информация о клиенте -->
+        <h2>Информация о клиенте</h2>
+        <p>Имя пользователя: @Model.UserName</p>
+        <p>Описание: @Model.Description</p>
+        <!-- Дополнительные поля профиля, если есть -->
+    </div>
+    <div class="col-md-6">
+        <!-- Созданные продукты -->
+        <h2>Созданные продукты</h2>
+        <div class="row">
+            @foreach (var product in Model.CreatedProducts)
+            {
+                <div class="col mb-4">
+                    <a asp-controller="Home" asp-action="ProductPage" asp-route-id="@product.Id" class="card-link">
+                        <div class="card h-100">
+                            <div>
+                                @if (!string.IsNullOrEmpty(product.ImageFileName))
+                                {
+                                    <img src="~/productImage/@product.ImageFileName" class="card-img-top img-fluid" alt="Product Image" style="max-height: 250px">
+                                }
+                            </div>
+                            <div class="card-body d-flex flex-column position-relative">
+                                <h5 class="card-title flex-grow-1">@product.Name</h5>
+                                <div>
+                                    <span class="product-price fs-5">@product.Price $</span> <!-- Добавляем класс fs-5 для увеличения размера -->
+                                </div>
+                                <div>
+                                    @if (SignInManager.IsSignedIn(User))
+                                    {
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto">
+                                                <a asp-controller="Home" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning ml-2 btn delete-btn">
+                                                    <i class="fas fa-edit"></i> Изменить
+                                                </a>
+                                                <a asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@product.Id" class="btn btn-outline-danger ml-2 btn delete-btn">
+                                                    <i class="fas fa-trash-alt"></i> Удалить
+                                                </a>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

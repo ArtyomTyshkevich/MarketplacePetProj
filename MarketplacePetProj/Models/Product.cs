@@ -28,5 +28,7 @@ namespace MarketplacePetProj.Models
         public string ImageFileName { get; set; }
 
         // Список заказов, в которых участвует этот продукт
-        public ICollection<Order> Orders { get; set; }    }
+        public ICollection<Order> Orders { get; set; }
+        public string? clientId { get; set; }
+    }
 }

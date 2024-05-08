@@ -40,12 +40,19 @@ namespace MarketplacePetProj.Service.Implementations
         {
             await clientRepositories.Update(client);
         }
-        public async Task<Client> GetFullClient(string Id)
+        public async Task<Client> GetClientWithOrder(string Id)
         {
             return await marketDbContext.clients
                             .Where(c => c.Id == Id)
                             .Include(c => c.Orders)
                             .ThenInclude(o => o.Products)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<Client> GetClientWithOwnProduct(string Id)
+        {
+            return await marketDbContext.clients
+                            .Where(c => c.Id == Id)
+                            .Include(c => c.CreatedProducts)
                             .FirstOrDefaultAsync();
         }
     }

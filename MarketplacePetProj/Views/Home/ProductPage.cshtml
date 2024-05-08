@@ -6,29 +6,30 @@
 }
 @inject SignInManager<Client> SignInManager
 
-<div class="card">
-    <img class="card-img-top" src="~/productImage/@Model.ImageFileName" class="img-fluid rounded shadow card-img-top" alt="Product Image">
+<div class="card shadow-sm">
+    <img class="card-img-top" src="~/productImage/@Model.ImageFileName" alt="Product Image">
     <div class="card-body">
-        <div class="product-info">
-            <h5 class="card-title">@Model.Name</h5>
-            <p class="card-text">@Model.Description</p>
-            <p class="card-text">Price: $@Model.Price</p>
-            <p class="card-text">Quantity: @Model.Quantity</p>
-        </div>
-          @if (SignInManager.IsSignedIn(User))
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text">Цена: $@Model.Price</p>
+        <p class="card-text">Количество: @Model.Quantity</p>
+        @if (SignInManager.IsSignedIn(User))
         {
-            <div class="product-buttons">
-
-                <a asp-controller="Home" asp-action="Basket" class="btn btn-success add-to-cart-btn">
-                    <i class="fas fa-cart-plus"></i> Добавить в корзину
-                </a>
-                <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <a asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning ml-2 btn delete-btn">
                     <i class="fas fa-edit"></i> Изменить
                 </a>
-                <a asp-controller="Home" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <a asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@Model.Id" class="btn btn-outline-danger ml-2 btn delete-btn">
                     <i class="fas fa-trash-alt"></i> Удалить
                 </a>
+                </div>
+                <div class="col-auto">
+                    <a asp-controller="Home" asp-action="Basket" asp-route-id="@Model.Id" class="btn btn-success btn-lg btn delete-btn">
+                        <i class="fas fa-cart-plus"></i> Добавить в корзину
+                    </a>
+                </div>
             </div>
         }
     </div>
-</div> 
+</div>
