@@ -11,5 +11,6 @@ namespace MarketplacePetProj.Service.Interfaces
         Task UpdateClient(Client client);
         Task<Client> GetClientWithOrder(string Id);
         Task<Client> GetClientWithOwnProduct(string Id);
+        Task UpdateClient(ClientDTO clientDTO);
     }
 }

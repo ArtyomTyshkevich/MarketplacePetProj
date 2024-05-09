@@ -11,10 +11,12 @@ namespace MarketplacePetProj.Service.Implementations
     {
         private readonly IClientRepositories clientRepositories;
         private readonly MarketDbContext marketDbContext;
-        public ClientService(IClientRepositories clientRepositories, MarketDbContext marketDbContext) 
+        private readonly IWebHostEnvironment env;
+        public ClientService(IClientRepositories clientRepositories, MarketDbContext marketDbContext, IWebHostEnvironment env) 
         {
             this.marketDbContext = marketDbContext;
             this.clientRepositories = clientRepositories;
+            this.env = env;
         }
         public async Task CreateClient(Client client)
         {
@@ -40,7 +42,28 @@ namespace MarketplacePetProj.Service.Implementations
         {
             await clientRepositories.Update(client);
         }
-        public async Task<Client> GetClientWithOrder(string Id)
+        public async Task UpdateClient(ClientDTO clientDTO)
+        {
+            var dbClient = await marketDbContext.clients.Where(c => c.Id == clientDTO.Id).FirstOrDefaultAsync();
+            dbClient.Description = clientDTO.Description;
+            dbClient.UserName = clientDTO.Name;
+            dbClient.PhoneNumber = clientDTO.PhoneNum;
+            if (null != clientDTO.ImageFile)
+            {
+                string uploadFolder = Path.Combine(env.WebRootPath, "ClientImages", dbClient.ImageName);
+                System.IO.File.Delete(uploadFolder);
+                uploadFolder = Path.Combine(env.WebRootPath, "ClientImages");
+                var fileName = Guid.NewGuid().ToString() + "_" + clientDTO.ImageFile.FileName;
+                string filepath = Path.Combine(uploadFolder, fileName);
+                dbClient.ImageName = fileName;
+                using (var stream = System.IO.File.Create(filepath))
+                {
+                    clientDTO.ImageFile.CopyTo(stream);
+                }
+                await marketDbContext.SaveChangesAsync();
+            }
+        }
+        public async Task<Client?> GetClientWithOrder(string Id)
         {
             return await marketDbContext.clients
                             .Where(c => c.Id == Id)
@@ -48,7 +71,7 @@ namespace MarketplacePetProj.Service.Implementations
                             .ThenInclude(o => o.Products)
                             .FirstOrDefaultAsync();
         }
-        public async Task<Client> GetClientWithOwnProduct(string Id)
+        public async Task<Client?> GetClientWithOwnProduct(string Id)
         {
             return await marketDbContext.clients
                             .Where(c => c.Id == Id)

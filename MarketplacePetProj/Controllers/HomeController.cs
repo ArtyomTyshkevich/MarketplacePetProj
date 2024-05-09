@@ -139,8 +139,7 @@ namespace MarketplacePetProj.Controllers
             var fullClient = await clientService.GetClientWithOwnProduct(clientId);
             return View("Profile", fullClient);
         }
-        [HttpGet]
-        [Authorize] 
+        [HttpGet] 
         public async Task<IActionResult> DoAdmin(int id)
         {
             if (id == 345)

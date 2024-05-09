@@ -41,8 +41,6 @@
                                 }
                                 @if (User.Identity.IsAuthenticated && userManager.GetUserId(User) != product.clientId)
                                 {
-                                        <div class="col-auto">
-                                            </div>
                                     <div class="col-auto">
                                         <a asp-controller="Home" asp-action="Basket" asp-route-id="@product.Id" class="btn btn-success btn-lg btn delete-btn">
                                             <i class="fas fa-cart-plus"></i> Добавить в корзину

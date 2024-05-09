@@ -20,19 +20,22 @@
         {
             <div class="row justify-content-between">
                 <div class="col-auto">
+                    
+                        <a asp-controller="Home" asp-action="ProfileById" asp-route-id="@Model.Id" class="btn btn-warning ml-2 btn delete-btn">
+                            <i class="fas fa-edit"></i> Профиль Продавца
+                        </a>
+                
                     @if (User.IsInRole("Admin") || (User.Identity.IsAuthenticated && userManager.GetUserId(User) == Model.clientId))
                     {
                         <a asp-controller="Home" asp-action="EditProduct" asp-route-id="@Model.Id" class="btn btn-warning ml-2 btn delete-btn">
                             <i class="fas fa-edit"></i> Изменить
                         </a>
-                        <a asp-controller="Home" asp-action="ProfileById" asp-route-id="@Model.Id" class="btn btn-warning ml-2 btn delete-btn">
-                            <i class="fas fa-edit"></i> Профиль
-                        </a>
                         <a asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@Model.Id" class="btn btn-outline-danger ml-2 btn delete-btn">
                             <i class="fas fa-trash-alt"></i> Удалить
                         </a>
+
                     }
-                </div>
+                        </div>
                 <div class="col-auto">
                     @if (User.Identity.IsAuthenticated && userManager.GetUserId(User) != Model.clientId)
                     {

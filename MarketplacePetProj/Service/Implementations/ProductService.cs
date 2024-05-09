@@ -15,7 +15,8 @@ namespace MarketplacePetProj.Service.Implementations
         private readonly MarketDbContext marketDbContext;
         private readonly IWebHostEnvironment env;
         private readonly UserManager<Client> userManager;
-        public ProductService(IProductRepositories productRepositories, MarketDbContext marketDbContext, IWebHostEnvironment env, UserManager<Client> userManager, IConfiguration configuration)
+        public ProductService(IProductRepositories productRepositories, MarketDbContext marketDbContext, IWebHostEnvironment env, 
+            UserManager<Client> userManager, IConfiguration configuration)
         {
             this.productRepositories = productRepositories;
             this.marketDbContext = marketDbContext;

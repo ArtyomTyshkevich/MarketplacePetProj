@@ -11,18 +11,32 @@
 }
 @if (User.IsInRole("Admin") || (User.Identity.IsAuthenticated && userManager.GetUserId(User) == Model.Id))
 {
-    <a asp-controller="Home" asp-action="DeleteProduct" asp-route-id="@Model.Id" class="btn btn-danger ml-2 btn delete-btn">
+    <a asp-controller="Profile" asp-action="EditClient" class="btn btn-warning ml-2 btn delete-btn">
         <i class="fas fa-edit"></i> Удалить Аккаунт
     </a>
 }
 <div class="row">
-    <div class="col-md-6">
-        <h2>Информация о клиенте</h2>
-        <p>Имя пользователя: @Model.UserName</p>
-        <p>Описание: @Model.Description</p>
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Информация о клиенте</h2>
+            <img src="~/ClientImages/@Model.ImageName" style="max-height: 250px" />
+            <div class="card-text">
+                <h2> @Model.UserName</h2>
+                <p><strong>Почта:</strong> @Model.Email</p>
+                
+                <p> @Model.Description</p>
+            </div>
+        </div>
+        <div>
+                <a asp-controller="Profile" asp-action="EditClient" class="btn btn-warning ml-2 btn delete-btn">
+                    <i class="fas fa-edit"></i> Изменить Профиль
+                </a>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h2>Созданные продукты</h2>
+</div>
+<div class="col-md-6">
+    <h2>Созданные продукты</h2>
         <div class="row">
             @foreach (var product in Model.CreatedProducts)
             {
@@ -57,7 +71,7 @@
                                     @if (User.Identity.IsAuthenticated && userManager.GetUserId(User) != Model.Id)
                                     {
                                     <div class="col-auto">
-                                    <a asp-controller="Home" asp-action="Basket" asp-route-id="@Model.Id" class="btn btn-success btn btn delete-btn">
+                                    <a asp-controller="Home" asp-action="Basket" asp-route-id="@product.Id" class="btn btn-success btn-lg btn delete-btn">
                                     <i class="fas fa-cart-plus"></i> Добавить в корзину
                                     </a>
                                     </div>
