@@ -7,6 +7,7 @@ namespace MarketplacePetProj.Models
     {
         public string Description { get; set; } = "";
 
+        public string ImageName { get; set; } = "defoultCLientImage.jpg";
         public ICollection<Product> CreatedProducts { get; set; } = new List<Product>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
         public ClientStatus ClientStatus { get; set; } 

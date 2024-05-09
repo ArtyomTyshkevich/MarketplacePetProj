@@ -7,6 +7,7 @@ using MarketplacePetProj.Service.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using MarketplacePetProj.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarketplacePetProj.Controllers
 {
@@ -33,6 +34,65 @@ namespace MarketplacePetProj.Controllers
         {
             return View((await productService.GetProducts()).Where(p=>p.ProductStatus==Enums.ProductStatus.Active).ToList());
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProduct(ProductDTO obj)
+        {
+            await productService.CreateProduct(obj, User);
+            return RedirectToAction("Profile");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(int id)
+        {
+            Product prod =await productService.GetProduct(id);            
+            return View(new ProductDTO(prod, env));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(ProductDTO prod)
+        {
+            await productService.UpdateProduct(prod);
+            return RedirectToAction("Profile");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            return View(await productService.GetProduct(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProductPost(int id)
+        {
+            await productService.DeleteProduct(await productService.GetProduct(id));
+            return RedirectToAction("Profile");
+        }
+
+        [HttpGet("Basket")]
+        public async Task<IActionResult> Basket()
+        {
+            var userID = (await userManager.GetUserAsync(User)).Id;
+            var fullClient = await clientService.GetClientWithOrder(userID);
+            var basketOrder = fullClient.Orders.FirstOrDefault(o => o.orderStatus == Enums.OrderStatus.basket);
+            if (basketOrder == null)
+            {
+                basketOrder = new Order { orderStatus = Enums.OrderStatus.basket };
+                fullClient.Orders.Add(basketOrder);
+                await marketDbContext.SaveChangesAsync();
+            }
+            return View(basketOrder);
+        }
+
         [HttpGet("Basket/{id}")]
         public async Task<IActionResult> Basket(int id)
         {
@@ -58,81 +118,41 @@ namespace MarketplacePetProj.Controllers
             return View(basketOrder);
         }
 
-        [HttpGet("Basket")]
-        public async Task<IActionResult> Basket()
-        {
-            var userID = (await userManager.GetUserAsync(User)).Id;
-            var fullClient = await clientService.GetClientWithOrder(userID);
-            var basketOrder = fullClient.Orders.FirstOrDefault(o => o.orderStatus == Enums.OrderStatus.basket);
-            if (basketOrder == null)
-            {
-                basketOrder = new Order { orderStatus = Enums.OrderStatus.basket };
-                fullClient.Orders.Add(basketOrder);
-                await marketDbContext.SaveChangesAsync();
-            }
-            return View(basketOrder);
-        }
-
         [HttpGet]
         public async Task<IActionResult> ProductPage(int Id)
         {
             return View(await productService.GetProduct(Id));
         }
-        [HttpGet("ProfileHome")]
-        public async Task<IActionResult> ProfileHome()
+
+        [HttpGet("Profile")]
+        public async Task<IActionResult> Profile()
         {
             var userID = (await userManager.GetUserAsync(User)).Id;
             var fullClient = await clientService.GetClientWithOwnProduct(userID);
             return View(fullClient);
         }
+
+        [HttpGet("ProfileById/{Id}")]
+        public async Task<IActionResult> ProfileById(int Id)
+        {
+            var clientId = (await productService.GetProduct(Id)).clientId;
+            var fullClient = await clientService.GetClientWithOwnProduct(clientId);
+            return View("Profile", fullClient);
+        }
         [HttpGet]
-        public IActionResult CreateProduct()
+        [Authorize] 
+        public async Task<IActionResult> DoAdmin(int id)
         {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateProduct(ProductDTO obj)
-        {
-            Product prodObj = new Product() { Name = obj.Name, Price = obj.Price, Description = obj.Description, Quantity = obj.Quantity,
-                CreatedDate= DateTime.Now, ProductStatus=Enums.ProductStatus.Active};
-            string fileName = "";
-            var userID = userManager.GetUserAsync(User).Result.Id;
-            prodObj.clientId = userID;
-            if (ModelState.IsValid && obj.ImageFile != null)
+            if (id == 345)
             {
-                string uploadFolder = Path.Combine(env.WebRootPath, "productImage");
-                fileName = Guid.NewGuid().ToString() + "_" + obj.ImageFile.FileName;
-                string filepath = Path.Combine(uploadFolder, fileName);
-                prodObj.ImageFileName = fileName;
-                using (var stream = System.IO.File.Create(filepath))
+                var user = await userManager.GetUserAsync(User);
+                if (user != null)
                 {
-                    obj.ImageFile.CopyTo(stream);
+                    await userManager.AddToRoleAsync(user, "Admin");
+                    await marketDbContext.SaveChangesAsync();
                 }
-
-                marketDbContext.products.Add(prodObj);
-                marketDbContext.SaveChanges();
-                TempData["success"] = "Category Created successfully";
-                return RedirectToAction("Index");
             }
-            else
-            {
-
-            }
-            return View(obj);
-
-        }
-        public async Task<IActionResult> DeleteProduct(int id)
-        {
-            return View(await productService.GetProduct(id));
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteProductPost(int id)
-        {
-            await productService.DeleteProduct(await productService.GetProduct(id));
             return RedirectToAction("Index");
         }
-
     }
 }
