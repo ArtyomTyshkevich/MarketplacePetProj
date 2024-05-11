@@ -16,8 +16,7 @@ builder.Services.AddScoped<IOrderRepositories, OrderRepositories>();
 builder.Services.AddScoped<IClientRepositories, ClientRepositories>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IClientService,ClientService>();
-
+builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddDbContext<MarketDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,8 +30,9 @@ builder.Services.AddDefaultIdentity<Client>(options =>
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MarketDbContext>();
+
 builder.Services.AddRazorPages();
-           
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -51,14 +51,16 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-using(var scope = app.Services.CreateScope())
+
+using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { "Admin", "User" };
-    foreach(var role in roles)
+    foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
             await roleManager.CreateAsync(new IdentityRole(role));
     }
 }
+
 app.Run();

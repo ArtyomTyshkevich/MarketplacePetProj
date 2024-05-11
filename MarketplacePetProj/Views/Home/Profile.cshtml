@@ -11,8 +11,8 @@
 }
 @if (User.IsInRole("Admin") || (User.Identity.IsAuthenticated && userManager.GetUserId(User) == Model.Id))
 {
-    <a asp-controller="Profile" asp-action="EditClient" class="btn btn-warning ml-2 btn delete-btn">
-        <i class="fas fa-edit"></i> Удалить Аккаунт
+    <a asp-controller="Profile" asp-action="DeleteMyAccount" class="btn btn-warning ml-2 btn delete-btn">
+        <i class="fas fa-edit"></i> Изменить Профиль
     </a>
 }
 <div class="row">

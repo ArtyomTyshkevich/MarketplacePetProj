@@ -11,7 +11,7 @@ namespace MarketplacePetProj.Models
         public IFormFile? ImageFile { get; set; }
         public ClientDTO(Client client, IWebHostEnvironment env)
         {
-            this.Id = client.Id;
+            this.Id =  client.Id;
             this.Name = client.UserName;
             this.PhoneNum = client.PhoneNumber;
             this.Description = client.Description;
@@ -23,6 +23,9 @@ namespace MarketplacePetProj.Models
         }
         public ClientDTO()
         {
+            Name = "";
+            Description = "";
+            PhoneNum = "";
         }
     }
 }

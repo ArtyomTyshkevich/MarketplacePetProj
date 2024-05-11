@@ -6,24 +6,25 @@
             <h2 class="text-primary">Изменить Профиль</h2>
             <hr />
         </div>
+        <input type="hidden" asp-for="Id" /> <!-- Скрытое поле для Id -->
         <div class="mb-3">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control mt-2">
+            <input asp-for="Name" class="form-control mt-2" value="@(Model.Name != null ? Model.Name : "")">
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Description"></label>
-            <input asp-for="Description" class="form-control mt-2">
+            <label asp-for="Description"></label>   
+            <input asp-for="Description" class="form-control mt-2" value="@(Model.Description != null ? Model.Description : "")">
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="PhoneNum"></label>
-            <input asp-for="PhoneNum" class="form-control mt-2">
+            <input asp-for="PhoneNum" class="form-control mt-2" value="@(Model.PhoneNum != null ? Model.PhoneNum : "")">
             <span asp-validation-for="PhoneNum" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="ImageFile">Выберите изображение</label>
-            <input asp-for="ImageFile" type="file" class="f orm-control" />
+            <input asp-for="ImageFile" type="file" class="form-control" />
             <span asp-validation-for="ImageFile" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Update</button>

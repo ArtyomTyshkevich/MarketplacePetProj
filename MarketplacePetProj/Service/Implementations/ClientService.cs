@@ -45,6 +45,10 @@ namespace MarketplacePetProj.Service.Implementations
         public async Task UpdateClient(ClientDTO clientDTO)
         {
             var dbClient = await marketDbContext.clients.Where(c => c.Id == clientDTO.Id).FirstOrDefaultAsync();
+            clientDTO.Name = clientDTO.Name ?? "";
+            clientDTO.Description = clientDTO.Description ?? "";
+            clientDTO.PhoneNum = clientDTO.PhoneNum ?? "";
+
             dbClient.Description = clientDTO.Description;
             dbClient.UserName = clientDTO.Name;
             dbClient.PhoneNumber = clientDTO.PhoneNum;
@@ -60,8 +64,8 @@ namespace MarketplacePetProj.Service.Implementations
                 {
                     clientDTO.ImageFile.CopyTo(stream);
                 }
-                await marketDbContext.SaveChangesAsync();
             }
+                await marketDbContext.SaveChangesAsync();
         }
         public async Task<Client?> GetClientWithOrder(string Id)
         {

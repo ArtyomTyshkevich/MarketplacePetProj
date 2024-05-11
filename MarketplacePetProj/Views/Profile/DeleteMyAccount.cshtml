@@ -1,0 +1,11 @@
+﻿@model MarketplacePetProj.Models.Client
+
+<h2>Удаление аккаунта</h2>
+
+<p>Вы действительно хотите удалить аккаунт<b> @Model.UserName</b> ?</p>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Удалить Аккаунт</button>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Отмена</a>
+</form>
