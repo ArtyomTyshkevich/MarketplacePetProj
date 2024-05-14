@@ -79,6 +79,7 @@ namespace MarketplacePetProj.Service.Implementations
 
         public async Task CreateProduct(ProductDTO productDTO, ClaimsPrincipal User)
         {
+            productDTO.nullCheck();
             Product prodObj = new Product()
             {
                 Name = productDTO.Name,

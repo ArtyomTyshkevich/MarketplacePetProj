@@ -1,0 +1,36 @@
+﻿@model List<Order>
+
+<h1>User Order List</h1>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Created Date</th>
+                <th>Products</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                            @foreach (var product in order.Products)
+                            {<a asp-controller="Home" asp-action="ProfileById" asp-route-id="@product.Id">
+                                    <h4 style="display: inline; text-decoration: none;">@product.Name</h4> - <span style="display: inline; text-decoration: none;">@product.Price $</span>
+                             </a>
+                            }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}

@@ -32,7 +32,9 @@ namespace MarketplacePetProj.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View((await productService.GetProducts()).Where(p=>p.ProductStatus==Enums.ProductStatus.Active).ToList());
+            return View((await productService.GetProducts()).Where(p=>p.ProductStatus==Enums.ProductStatus.Active)
+                .OrderByDescending(p=>p.CreatedDate)
+                .ToList());
         }
 
         [HttpGet]

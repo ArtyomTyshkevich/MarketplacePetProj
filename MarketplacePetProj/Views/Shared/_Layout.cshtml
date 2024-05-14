@@ -22,7 +22,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @if (SignInManager.IsSignedIn(User) && (await userManager.GetUserAsync(User)).ClientStatus==MarketplacePetProj.Enums.ClientStatus.Active)
+                @if (SignInManager.IsSignedIn(User))
                 {
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
@@ -46,16 +46,6 @@
                 </ul>
             </div>
             }
-                @if ((await userManager.GetUserAsync(User)).ClientStatus == MarketplacePetProj.Enums.ClientStatus.Inactive)
-                {
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a asp-controller="Profile" asp-action="AccountRestore" class="btn  btn delete-btn">
-                                <i class="fas fa-cart-plus"></i> Востановить Аккаунт
-                            </a>
-                        </li>
-                    </ul>
-                }
             </div>
             <partial name="_LoginPartial" />
         </nav>

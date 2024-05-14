@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using MarketplacePetProj.Enums
 @model MarketplacePetProj.Models.Client
 
 @{
@@ -11,14 +12,17 @@
 }
 @if (User.IsInRole("Admin") || (User.Identity.IsAuthenticated && userManager.GetUserId(User) == Model.Id))
 {
-    <a asp-controller="Profile" asp-action="DeleteMyAccount" class="btn btn-warning ml-2 btn delete-btn">
-        <i class="fas fa-edit"></i> Изменить Профиль
+    <a asp-controller="Profile" asp-action="DeleteMyAccount" class="btn btn-outline-danger ml-2 btn delete-btn">
+        <i class="fas fa-edit"></i> Удалить профиль
     </a>
 }
 <div class="row">
 <div class="col-md-6">
     <div class="card">
         <div class="card-body">
+                <a asp-controller="Profile" asp-action="EditClient" class="btn btn-warning ml-2 btn delete-btn">
+                    <i class="fas fa-edit"></i> Изменить Профиль
+                </a>
             <h2 class="card-title">Информация о клиенте</h2>
             <img src="~/ClientImages/@Model.ImageName" style="max-height: 250px" />
             <div class="card-text">
@@ -29,8 +33,13 @@
             </div>
         </div>
         <div>
-                <a asp-controller="Profile" asp-action="EditClient" class="btn btn-warning ml-2 btn delete-btn">
-                    <i class="fas fa-edit"></i> Изменить Профиль
+
+                <a asp-controller="Profile" asp-action="UserBoughtProducts" class="btn btn-secondary ml-2 btn delete-btn">
+                    <i class="fas fa-edit"></i> Продажи
+                </a>
+
+                <a asp-controller="Profile" asp-action="UserOrderList" class="btn btn-secondary ml-2 btn delete-btn">
+                    <i class="fas fa-edit"></i> Покупки
                 </a>
         </div>
     </div>
@@ -43,6 +52,18 @@
                 <div class="col mb-4">
                     <a asp-controller="Home" asp-action="ProductPage" asp-route-id="@product.Id" class="card-link">
                         <div class="card h-100">
+                            @if (product.ProductStatus == ProductStatus.Active)
+                            {
+                                <a asp-controller="Profile" asp-action="hideOrOpenProduct" asp-route-id="@product.Id" class="btn btn-outline-primary ml-2 btn delete-btn">
+                                    <i class="fas fa-edit"> Деактивировать</i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Profile" asp-action="hideOrOpenProduct" asp-route-id="@product.Id" class="btn btn-primary ml-2 btn delete-btn">
+                                    <i class="fas fa-edit">Активировать</i>
+                                </a>
+                            }
                             <div>
                                 @if (!string.IsNullOrEmpty(product.ImageFileName))
                                 {

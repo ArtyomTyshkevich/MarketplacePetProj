@@ -1,0 +1,39 @@
+﻿@model List<Order>
+
+<h1>User Bought Products</h1>
+
+@if (Model.Count == 0)
+{
+    <p>No products bought by the user.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Продукт</th>
+                <th>Цена</th>
+                <th>Дата покупки</th>
+                <th>Аккаунт покупателя </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                foreach (var prod in order.Products)
+                {
+                    <tr>
+                        <td>@prod.Name</td>
+                        <td>@prod.Price</td>
+                        <td>@(order.CreatedDate.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                        <td>
+                            <a asp-controller="Home" asp-action="ProfileById" asp-route-id="@prod.Id" class="btn btn-warning ml-2 btn delete-btn">
+                            <i class="fas fa-edit"></i> Профиль покупателя
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

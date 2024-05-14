@@ -25,6 +25,11 @@ namespace MarketplacePetProj.Models
                 this.ImageFile = new FormFile(fileStream, 0, fileStream.Length, null, Path.GetFileName(filePath));
             }
         }
+        public void nullCheck()
+        {
+            this.Name = this.Name ?? "";
+            this.Description = this.Description ?? "";
+        }
         public ProductDTO()
         {
         }

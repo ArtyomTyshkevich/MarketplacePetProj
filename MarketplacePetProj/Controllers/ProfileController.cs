@@ -1,8 +1,11 @@
 ﻿using MarketplacePetProj.Data;
+using MarketplacePetProj.Enums;
 using MarketplacePetProj.Models;
 using MarketplacePetProj.Service.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace MarketplacePetProj.Controllers
 {
@@ -64,6 +67,46 @@ namespace MarketplacePetProj.Controllers
             await marketDbContext.SaveChangesAsync();   
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserOrderList()
+        {
+            var orders = await marketDbContext.orders
+                .Where(o => o.CLientId == userManager.GetUserId(User))
+                .Include(o => o.Products)
+                .OrderByDescending(o => o.CreatedDate)
+                .ToListAsync();
+
+            return View(orders);
+        }
+        [HttpGet]
+        public async Task<IActionResult> UserBoughtProducts()
+        {
+            var userId = userManager.GetUserId(User);
+
+            var orders = await marketDbContext.orders
+                .Where(o=>o.orderStatus!= Enums.OrderStatus.basket)
+                .Include(o => o.Products.Where(p => p.clientId == userId))
+                .Where(o => o.Products.Any(p => p.clientId == userId))
+                .OrderByDescending(o => o.CreatedDate)
+                .ToListAsync();
+
+            return View(orders);
+        }
+        [HttpGet]
+        public async Task<IActionResult> hideOrOpenProduct(int id)
+        {
+            var product = await productService.GetProduct(id);
+            var clientStatus = product.ProductStatus;
+
+            if (clientStatus == Enums.ProductStatus.Active)
+                product.ProductStatus = Enums.ProductStatus.Inactive;
+            else
+                product.ProductStatus = Enums.ProductStatus.Active;
+
+            await marketDbContext.SaveChangesAsync();
+            return RedirectToAction("Profile", "Home");
         }
     }
 }
