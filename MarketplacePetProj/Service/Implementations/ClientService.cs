@@ -4,6 +4,7 @@ using MarketplacePetProj.Repositories;
 using MarketplacePetProj.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MarketplacePetProj.Service.Implementations
 {
@@ -25,7 +26,14 @@ namespace MarketplacePetProj.Service.Implementations
 
         public async Task DeleteClient(Client client)
         {
-            await clientRepositories.Delete(client);
+            var fullClient = await GetClientWithOwnProduct(client.Id);
+            fullClient.ClientStatus = Enums.ClientStatus.Inactive;
+            var products = fullClient.CreatedProducts.ToList();
+            foreach (var product in products)
+            {
+                product.ProductStatus = Enums.ProductStatus.Inactive;
+            }
+            await marketDbContext.SaveChangesAsync();
         }
 
         public async Task<Client> GetClint(string Id)

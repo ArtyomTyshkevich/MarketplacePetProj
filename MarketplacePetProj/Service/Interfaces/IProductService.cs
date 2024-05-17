@@ -11,6 +11,7 @@ namespace MarketplacePetProj.Service.Interfaces
         public Task UpdateProduct(ProductDTO product);
         public Task DeleteProduct(Product product);
         public Task CreateProduct(ProductDTO productDTO, ClaimsPrincipal User);
+        Task TransformStatus(int id);
     }
 }
 

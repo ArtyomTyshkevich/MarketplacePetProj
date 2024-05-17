@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Linq
 @model IEnumerable<MarketplacePetProj.Models.Product>
 @{
     ViewData["Title"] = "Products";
@@ -39,6 +40,7 @@
                                         </a>
                                     </div>
                                 }
+                                
                                 @if (User.Identity.IsAuthenticated && userManager.GetUserId(User) != product.clientId)
                                 {
                                     <div class="col-auto">

@@ -111,7 +111,17 @@ namespace MarketplacePetProj.Service.Implementations
                 marketDbContext.products.Add(prodObj);
                 await marketDbContext.SaveChangesAsync();
             }
+        }
+        public async Task TransformStatus(int id)
+        {
+            var product = await GetProduct(id);
+            var clientStatus = product.ProductStatus;
 
+            if (clientStatus == Enums.ProductStatus.Active)
+                product.ProductStatus = Enums.ProductStatus.Inactive;
+            else
+                product.ProductStatus = Enums.ProductStatus.Active;
+            await marketDbContext.SaveChangesAsync();
         }
     }
 

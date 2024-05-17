@@ -1,4 +1,5 @@
 ﻿using MarketplacePetProj.Models;
+using System.Threading.Tasks;
 
 namespace MarketplacePetProj.Service.Interfaces
 {
@@ -9,5 +10,8 @@ namespace MarketplacePetProj.Service.Interfaces
         Task<Order> GetOrder(int Id);
         Task<List<Order>> GetOrders();
         Task UpdateOrder(Order order);
+        Task<List<Order>> GetClientOrdersWithProduct(string id);
+        Task<List<Order>> GetClientOwnProductWithOrders(string userId);
+        Task<Order> GetBasketOrder(string userId);
     }
 }

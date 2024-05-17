@@ -25,9 +25,7 @@ namespace MarketplacePetProj.Controllers
         }
         public async Task<IActionResult> Delete(int Id)
         {
-            var userID = (await userManager.GetUserAsync(User)).Id;
-            var fullClient = await clientService.GetClientWithOrder(userID);
-            var basketOrder = fullClient.Orders.FirstOrDefault(o => o.orderStatus == Enums.OrderStatus.basket);
+            var basketOrder = await orderService.GetBasketOrder(userManager.GetUserId(User));
             basketOrder.Products.Remove(await productService.GetProduct(Id));
             await marketDbContext.SaveChangesAsync();
             return RedirectToAction("Basket", "Home");
@@ -39,19 +37,9 @@ namespace MarketplacePetProj.Controllers
                                        .Include(p => p.Products)
                                        .FirstOrDefaultAsync();
             basketOrder.orderStatus = Enums.OrderStatus.processed;
-            basketOrder.orderStatus = Enums.OrderStatus.processed;
             basketOrder.CreatedDate = DateTime.Now;
             await marketDbContext.SaveChangesAsync();
-            foreach (var product in basketOrder.Products)
-            {
-                product.Quantity--;
-                if(product.Quantity<=0)
-                {
-                    product.Quantity = 0;
-                    product.ProductStatus = Enums.ProductStatus.Inactive;
-                    await marketDbContext.SaveChangesAsync();
-                }
-            }
+
 
             return RedirectToAction("Index", "Home");
         }

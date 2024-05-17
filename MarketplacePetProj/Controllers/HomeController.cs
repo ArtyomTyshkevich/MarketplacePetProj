@@ -83,31 +83,13 @@ namespace MarketplacePetProj.Controllers
         [HttpGet("Basket")]
         public async Task<IActionResult> Basket()
         {
-            var userID = (await userManager.GetUserAsync(User)).Id;
-            var fullClient = await clientService.GetClientWithOrder(userID);
-            var basketOrder = fullClient.Orders.FirstOrDefault(o => o.orderStatus == Enums.OrderStatus.basket);
-            if (basketOrder == null)
-            {
-                basketOrder = new Order { orderStatus = Enums.OrderStatus.basket };
-                fullClient.Orders.Add(basketOrder);
-                await marketDbContext.SaveChangesAsync();
-            }
-            return View(basketOrder);
+            return View(await orderService.GetBasketOrder(userManager.GetUserId(User)));
         }
 
         [HttpGet("Basket/{id}")]
         public async Task<IActionResult> Basket(int id)
         {
-            var userID =(await userManager.GetUserAsync(User)).Id;
-            var fullClient = await clientService.GetClientWithOrder(userID);
-            var basketOrder = fullClient.Orders.FirstOrDefault(o => o.orderStatus == Enums.OrderStatus.basket);
-
-            if (basketOrder == null)
-            {
-                basketOrder = new Order { orderStatus = Enums.OrderStatus.basket };
-                fullClient.Orders.Add(basketOrder);
-                await marketDbContext.SaveChangesAsync();
-            }
+            var basketOrder = await orderService.GetBasketOrder(userManager.GetUserId(User));
 
             var product = await productService.GetProduct(id);
 
@@ -116,8 +98,7 @@ namespace MarketplacePetProj.Controllers
                 basketOrder.Products.Add(product);
                 await marketDbContext.SaveChangesAsync();
             }
-
-            return View(basketOrder);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -129,16 +110,14 @@ namespace MarketplacePetProj.Controllers
         [HttpGet("Profile")]
         public async Task<IActionResult> Profile()
         {
-            var userID = (await userManager.GetUserAsync(User)).Id;
-            var fullClient = await clientService.GetClientWithOwnProduct(userID);
+            var fullClient = await clientService.GetClientWithOwnProduct(userManager.GetUserId(User));
             return View(fullClient);
         }
 
         [HttpGet("ProfileById/{Id}")]
         public async Task<IActionResult> ProfileById(int Id)
         {
-            var clientId = (await productService.GetProduct(Id)).clientId;
-            var fullClient = await clientService.GetClientWithOwnProduct(clientId);
+            var fullClient = await clientService.GetClientWithOwnProduct((await productService.GetProduct(Id)).clientId);
             return View("Profile", fullClient);
         }
         [HttpGet] 
